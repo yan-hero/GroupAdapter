@@ -23,8 +23,8 @@ def main(args):
     results_file = "./{}_result/seed_{}_epochs_{}_{}.txt".format(args.model_name,args.seed,args.epochs,args.datasets)
 
     #create tensorboard
-    # print('Start Tensorboard with "tensorboard --logdir=EANN_result", view at http://localhost:6006/')
-    # tb_writer = SummaryWriter(log_dir='./EANN_result')
+    # print('Start Tensorboard with "tensorboard --logdir=MCAN_result", view at http://localhost:6006/')
+    # tb_writer = SummaryWriter(log_dir='./MCAN_result')
 
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -149,10 +149,6 @@ def main(args):
         if  valid_acc > best_validate_acc:
             best_validate_acc =  valid_acc
             param_dict['valid_acc'] = valid_acc
-            # if not os.path.exists(args.save_weights_dir):
-            #     os.mkdir(args.save_weights_dir)
-            # if not os.path.exists(args.save_weights_dir+'/'+str(args.seed)):
-            #     os.mkdir(args.save_weights_dir+'/'+str(args.seed))
 
             # if not os.path.exists( './'+str(args.model_name)+'_checkpoint' + '/'+'seed_'+str(args.seed)+'/'+'epochs_'+str(args.epochs)+'/'):
             #     os.makedirs('./'+str(args.model_name)+'_checkpoint'  + '/'+'seed_'+str(args.seed)+'/'+'epochs_'+str(args.epochs)+'/')
@@ -202,62 +198,6 @@ def main(args):
     #plot picture
     plot_loss_acc_picture(train_loss_list, valid_loss_list, train_acc_list, valid_acc_list, args)
     # plot_step_acc_pic(args.epochs*len(train_loader),steps_train_acc_list,args)
-
-    # Test the Model
-    # print('testing model')
-    # model = CNN_Fusion(args, W)
-    # model.load_state_dict(torch.load(best_validate_dir)['model'])
-    # # print(torch.load(best_validate_dir)['optimizer']['param_groups'])
-    # #    print(torch.cuda.is_available())
-    # if torch.cuda.is_available():
-    #     model.to(device)
-    # model.eval()
-    # test_score = []
-    # test_pred = []
-    # test_true = []
-    # with torch.no_grad():
-    #     for i, (test_data, test_labels,test_event) in enumerate(test_loader):
-    #         test_text, test_image, test_mask, test_labels,test_event = test_data[0].to(device),\
-    #                 test_data[1].to(device), test_data[2].to(device), test_labels.to(device),test_event.to(device)
-    #
-    #         test_outputs, domain_outputs= model(test_text, test_image, test_mask)
-    #         _, test_argmax = torch.max(test_outputs, 1)
-    #         if i == 0:
-    #             test_score = to_np(test_outputs.squeeze())
-    #             test_pred = to_np(test_argmax.squeeze())
-    #             test_true = to_np(test_labels.squeeze())
-    #         else:
-    #             test_score = np.concatenate((test_score, to_np(test_outputs)), axis=0)
-    #             test_pred = np.concatenate((test_pred, to_np(test_argmax)), axis=0)
-    #             test_true = np.concatenate((test_true, to_np(test_labels)), axis=0)
-    #
-    # test_accuracy = np.mean(test_pred == test_true)
-    # cfm = ConfusionMatrix(args.class_num)
-    # cfm.update(test_pred,test_true)
-    # precision_list,recall_list,f1_list = cfm.summary()
-    #
-    # print('test_accuracy: {:.4f}'.format(test_accuracy))
-    #
-    # # for i in range(args.class_num):
-    # #     print(f'class: {i} Precision: {precision_list[i]:.4f}  Recall: {recall_list[i]:.4f} '
-    # #           f'f1 : {f1_list[i]:.4f}')
-    # #
-    # # with open(results_file, 'a') as f:
-    # #     test_info =f'test_accuracy: {test_accuracy:.4f}'
-    # #     f.write('\n'+test_info+'\n')
-    # #     for i in range(args.class_num):
-    # #         f.write(f'class: {i} Precision: {precision_list[i]:.4f}  '
-    # #                 f'Recall: {recall_list[i]:.4f}'
-    # #                 f'f1: {f1_list[i]}\n')
-    #
-    # macro_precision = np.mean(np.array(precision_list))
-    # macro_recall = np.mean(np.array(recall_list))
-    # macro_f1 = np.mean(np.array(f1_list))
-    #
-    # with open(results_file, 'a') as f:
-    #     f.write(f'macro_precision: {macro_precision:.4f} macro_recall: {macro_recall:.4f} macro_f1: {macro_f1:.4f}'+'\n')
-
-    # plot_loss_acc_picture([train_loss_list, valid_loss_list, train_acc_list, valid_acc_list], args)
 
 if __name__ == '__main__':
     import argparse
